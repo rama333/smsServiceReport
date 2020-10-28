@@ -1,0 +1,21 @@
+version: "3"
+networks:
+  smsservice:
+    external: true
+
+services:
+  smsservice:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+      - 8081:8081
+    environment:
+      - PORT=8080
+      - DIAG_PORT=8081
+    extra_hosts:
+      - "dockerhost:192.168.114.145"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
