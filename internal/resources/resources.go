@@ -2,22 +2,22 @@ package resources
 
 import (
 	"fmt"
+	_ "github.com/ClickHouse/clickhouse-go"
 	"github.com/jmoiron/sqlx"
 	"github.com/kelseyhightower/envconfig"
 	"go.uber.org/zap"
-	_ "github.com/ClickHouse/clickhouse-go"
 )
 
 type R struct {
 	Config Config
 	//DB     *reform.DB
-	Conn   *sqlx.DB
+	Conn *sqlx.DB
 }
 
 type Config struct {
 	DiagPort    int    `envconfig:"DIAG_PORT" default:"8081" required:"true"`
 	RESTAPIPort int    `envconfig:"PORT" default:"8080" required:"true"`
-	DBURL       string `envconfig:"DB_URL" default:"postgres://user:password@localhost:5432/petstore?sslmode=disable" required:"true"`
+	DBURL       string `envconfig:"DB_URL" default:"tcp://dockerhost:9000?debug=true" required:"true"`
 }
 
 func New(logger *zap.SugaredLogger) (*R, error) {
@@ -29,7 +29,6 @@ func New(logger *zap.SugaredLogger) (*R, error) {
 	if err != nil {
 		return nil, fmt.Errorf("can't process the config: %w", err)
 	}
-
 
 	//conn, err := sql.Open("pgx", conf.DBURL)
 	conn, err := sqlx.Open("clickhouse", "tcp://dockerhost:9000?debug=true")
@@ -43,7 +42,7 @@ func New(logger *zap.SugaredLogger) (*R, error) {
 
 	return &R{
 		Config: conf,
-		Conn:     conn,
+		Conn:   conn,
 	}, nil
 }
 

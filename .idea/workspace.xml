@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="469aefbc-a684-40d0-874a-ca29e201d7cc" name="Default Changelist" comment="" />
+    <list default="true" id="469aefbc-a684-40d0-874a-ca29e201d7cc" name="Default Changelist" comment="add">
+      <change afterPath="$PROJECT_DIR$/internal/restapi/messages/apis.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/restapi/messages/daos/messagesDAO.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/restapi/messages/models/models.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/restapi/messages/services.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/restapi/response.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/restapi/restapi.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/restapi/statMessage/apis.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/restapi/statMessage/models/models.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/restapi/statMessage/services.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/restapi/userMessages/apis.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/restapi/userMessages/models/models.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/restapi/userMessages/services.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/smsReport/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/smsReport/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/diagnostics/diagnostics.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/diagnostics/diagnostics.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/resources/resources.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/resources/resources.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,8 +27,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Go File" />
         <option value="tsconfig.json" />
+        <option value="Go File" />
       </list>
     </option>
   </component>
@@ -20,7 +37,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1j8HnpnRGAPK7pmXpmoeOOHMT5s" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -28,9 +47,24 @@
   <component name="PropertiesComponent">
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="go.import.settings.migrated" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/internal/restapi/UserMessages" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/internal/restapi/UserMessages" />
+      <recent name="$PROJECT_DIR$/internal/restapi/StatMessage" />
+      <recent name="$PROJECT_DIR$/internal/restapi/Messages" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/internal/restApis" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -47,14 +81,30 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="320" y="115" key="#Deployment" timestamp="1603186991169">
+    <state x="320" y="115" key="#Deployment" timestamp="1603869141226">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="115" key="#Deployment/0.0.1440.900@0.0.1440.900" timestamp="1603186991169" />
+    <state x="320" y="115" key="#Deployment/0.0.1440.900@0.0.1440.900" timestamp="1603869141226" />
     <state x="383" y="127" key="#Options" timestamp="1603187002408">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="383" y="127" key="#Options/0.0.1440.900@0.0.1440.900" timestamp="1603187002408" />
+    <state x="327" y="34" key="CommitChangelistDialog2" timestamp="1603868815382">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="327" y="34" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1603868815382" />
+    <state x="574" y="354" key="Github.ShareDialog" timestamp="1603868879264">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="574" y="354" key="Github.ShareDialog/0.0.1440.900@0.0.1440.900" timestamp="1603868879264" />
+    <state x="520" y="162" key="Github.UntrackedFilesDialog" timestamp="1603868883658">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="520" y="162" key="Github.UntrackedFilesDialog/0.0.1440.900@0.0.1440.900" timestamp="1603868883658" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1603868803551">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1603868803551" />
     <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1603179339431">
       <screen x="0" y="0" width="1440" height="900" />
     </state>

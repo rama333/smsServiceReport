@@ -27,12 +27,8 @@ func main() {
 
 	slogger.Info("Configuring the application units...")
 
-	
 	diag := diagnostics.New(slogger, rsc.Config.DiagPort, rsc.Healthz)
 	diag.Start(slogger)
 	slogger.Info("The application is ready to serve requests.")
-
-
-
 
 }
