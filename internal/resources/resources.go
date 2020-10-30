@@ -10,8 +10,7 @@ import (
 
 type R struct {
 	Config Config
-	//DB     *reform.DB
-	Conn *sqlx.DB
+	Conn   *sqlx.DB
 }
 
 type Config struct {
@@ -31,7 +30,7 @@ func New(logger *zap.SugaredLogger) (*R, error) {
 	}
 
 	//conn, err := sql.Open("pgx", conf.DBURL)
-	conn, err := sqlx.Open("clickhouse", "tcp://dockerhost:9000?debug=true")
+	conn, err := sqlx.Open("clickhouse", "tcp://192.168.114.145:9000?debug=true")
 	if err != nil {
 		return nil, err
 	}

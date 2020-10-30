@@ -34,7 +34,7 @@ func New(logger *zap.SugaredLogger, port int, hc healthz.Check) *Diagnostics {
 
 // Start diagnostics server.
 func (d *Diagnostics) Start(logger *zap.SugaredLogger) {
-	d.server.ListenAndServe()
+	//d.server.ListenAndServe()
 	go func() {
 		logger.Info("diagnostic ok2--------")
 		d.errors <- d.server.ListenAndServe()

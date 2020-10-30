@@ -15,6 +15,6 @@ type Messages struct {
 }
 
 type DurationDate struct {
-	StartDuration time.Time `json:"since_date"`
-	EndDuration   time.Time `json:"on_date"`
+	StartDuration string `json:"since_date"`
+	EndDuration   string `json:"on_date"`
 }

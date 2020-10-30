@@ -1,4 +1,4 @@
-package messages
+package services
 
 import (
 	"smsServiceReport/internal/restapi/messages/models"

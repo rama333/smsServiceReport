@@ -4,6 +4,9 @@ import (
 	"go.uber.org/zap"
 	"smsServiceReport/internal/diagnostics"
 	"smsServiceReport/internal/resources"
+	"smsServiceReport/internal/restapi/api"
+	"smsServiceReport/internal/restapi/messages/daos"
+	"smsServiceReport/internal/restapi/messages/services"
 )
 
 func main() {
@@ -30,5 +33,11 @@ func main() {
 	diag := diagnostics.New(slogger, rsc.Config.DiagPort, rsc.Healthz)
 	diag.Start(slogger)
 	slogger.Info("The application is ready to serve requests.")
+
+	dbMessages := daos.New(rsc.Conn)
+	serMessages := services.NewService(dbMessages)
+
+	rapi := api.New(slogger, serMessages)
+	rapi.Start(rsc.Config.RESTAPIPort)
 
 }
