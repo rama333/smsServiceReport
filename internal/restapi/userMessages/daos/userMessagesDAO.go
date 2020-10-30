@@ -19,7 +19,7 @@ func (userMes UserMessagesDAO) GetUserMessages(dest_add string, startDuration st
 
 	var mes []models.Messages
 
-	q := fmt.Sprintf("SELECT Send.date,submit_date,done_date,dest_addr,id,sms_text, Send.source_addr, SentMesId.message_id, stat FROM SentMesId INNER JOIN Receive ON Receive.message_id = SentMesId.message_id INNER JOIN Send ON SentMesId.sequence = Send.sequence  where Send.date BETWEEN toDateTime('%s') and toDateTime('%s') and dest_addr = %s;", startDuration, endDuration, dest_add)
+	q := fmt.Sprintf("SELECT Send.date,submit_date,done_date,Receive.destination_addr,id,sms_text, Send.source_addr, SentMesId.message_id, stat FROM SentMesId INNER JOIN Receive ON Receive.message_id = SentMesId.message_id INNER JOIN Send ON SentMesId.sequence = Send.sequence and Receive.destination_addr = Send.dest_addr  where Send.date BETWEEN toDateTime('%s') and toDateTime('%s') and destination_addr = %s;", startDuration, endDuration, dest_add)
 	err := userMes.db.Select(&mes, q)
 
 	if err != nil {

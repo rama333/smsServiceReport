@@ -35,8 +35,8 @@ func (m *UserMessagesHandler) GetMessages(c *gin.Context) {
 	//	restapi.ResponseBadRequest("Couldn't parse request body", c)
 	//}
 
-	if messages, err := m.Hand.GetUserMessages(dur.Dest_adr, dur.StartDuration, dur.EndDuration); err != nil {
-		restapi.ResponseStatusNotFound(err.Error(), c)
+	if messages, err := m.Hand.GetUserMessages(dur.Dest_adr, dur.StartDuration, dur.EndDuration); err != nil || len(messages) == 0 {
+		restapi.ResponseStatusNotFound("Status Not Found", c)
 	} else {
 		c.JSON(http.StatusOK, messages)
 	}

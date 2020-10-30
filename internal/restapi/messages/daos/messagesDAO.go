@@ -3,6 +3,7 @@ package daos
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
+	"log"
 	"smsServiceReport/internal/restapi/messages/models"
 )
 
@@ -25,6 +26,8 @@ func (m *MessagesDAO) GetMessages(startDuration string, endDuration string) ([]m
 
 	q := fmt.Sprintf("SELECT Send.date,submit_date,done_date,dest_addr,id,sms_text, Send.source_addr, SentMesId.message_id, stat FROM SentMesId INNER JOIN Receive ON Receive.message_id = SentMesId.message_id INNER JOIN Send ON SentMesId.sequence = Send.sequence where Send.date BETWEEN toDateTime('%s') and toDateTime('%s');", startDuration, endDuration)
 	err := m.db.Select(&mes, q)
+
+	log.Println(len(mes))
 
 	if err != nil {
 		return nil, err
