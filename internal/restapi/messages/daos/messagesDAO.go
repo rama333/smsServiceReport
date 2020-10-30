@@ -1,9 +1,9 @@
 package daos
 
 import (
+	"fmt"
 	"github.com/jmoiron/sqlx"
 	"smsServiceReport/internal/restapi/messages/models"
-	"time"
 )
 
 type MessagesDAO struct {
@@ -15,11 +15,20 @@ func New(db *sqlx.DB) *MessagesDAO {
 	return &MessagesDAO{db: db}
 }
 
-func (m *MessagesDAO) GetMessages(startDuration time.Time, endDuration time.Time) ([]models.Messages, error) {
+func (m *MessagesDAO) GetMessages(startDuration string, endDuration string) ([]models.Messages, error) {
 
-	tx := m.db.MustBegin()
+	//tx := m.db.MustBegin()
 
-	tx.MustExec("select 1")
+	//tx.MustExec("SELECT * FROM SentMesId INNER JOIN Receive ON Receive.message_id = SentMesId.message_id INNER JOIN Send ON SentMesId.sequence = Send.sequence where Send.date BETWEEN toDateTime('$1') and toDateTime('$2');")
 
-	return nil, nil
+	var mes []models.Messages
+
+	q := fmt.Sprintf("SELECT Send.date,submit_date,done_date,dest_addr,id,sms_text, Send.source_addr, SentMesId.message_id, stat FROM SentMesId INNER JOIN Receive ON Receive.message_id = SentMesId.message_id INNER JOIN Send ON SentMesId.sequence = Send.sequence where Send.date BETWEEN toDateTime('%s') and toDateTime('%s');", startDuration, endDuration)
+	err := m.db.Select(&mes, q)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return mes, nil
 }

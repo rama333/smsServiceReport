@@ -6,6 +6,10 @@ import (
 	"go.uber.org/zap"
 	"smsServiceReport/internal/restapi/messages/apis"
 	"smsServiceReport/internal/restapi/messages/services"
+	_ "smsServiceReport/internal/restapi/userMessages/apis"
+	apis2 "smsServiceReport/internal/restapi/userMessages/apis"
+	_ "smsServiceReport/internal/restapi/userMessages/services"
+	services2 "smsServiceReport/internal/restapi/userMessages/services"
 )
 
 type RESTAPI struct {
@@ -14,10 +18,14 @@ type RESTAPI struct {
 	logger *zap.SugaredLogger
 }
 
-func New(logger *zap.SugaredLogger, mes *services.Service) *RESTAPI {
+func New(logger *zap.SugaredLogger, mes *services.Service, ser *services2.ServiceUserMessages) *RESTAPI {
 
 	handler := apis.MessaheHandler{
 		MessageService: mes,
+	}
+
+	handlerUserMessages := apis2.UserMessagesHandler{
+		Hand: ser,
 	}
 
 	r := gin.New()
@@ -27,7 +35,7 @@ func New(logger *zap.SugaredLogger, mes *services.Service) *RESTAPI {
 	v1 := r.Group("/")
 	{
 		v1.POST("StatMessage", handler.GetMessages)
-		//v1.POST("UserMessages", apis.GetSumService)
+		v1.POST("UserMessages", handlerUserMessages.GetMessages)
 		//v1.POST("messages", apis.GetSumService)
 	}
 

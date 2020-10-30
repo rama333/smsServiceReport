@@ -5,15 +5,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"smsServiceReport/internal/restapi"
-	"smsServiceReport/internal/restapi/messages/models"
-	"smsServiceReport/internal/restapi/messages/services"
+	"smsServiceReport/internal/restapi/userMessages/models"
+	"smsServiceReport/internal/restapi/userMessages/services"
 )
 
-type MessaheHandler struct {
-	MessageService *services.Service
+type UserMessagesHandler struct {
+	Hand *services.ServiceUserMessages
 }
 
-func (m *MessaheHandler) GetMessages(c *gin.Context) {
+func (m *UserMessagesHandler) GetMessages(c *gin.Context) {
 	req := json.NewDecoder(c.Request.Body)
 
 	var dur models.DurationDate
@@ -35,7 +35,7 @@ func (m *MessaheHandler) GetMessages(c *gin.Context) {
 	//	restapi.ResponseBadRequest("Couldn't parse request body", c)
 	//}
 
-	if messages, err := m.MessageService.GetMessages(dur.StartDuration, dur.EndDuration); err != nil {
+	if messages, err := m.Hand.GetUserMessages(dur.Dest_adr, dur.StartDuration, dur.EndDuration); err != nil {
 		restapi.ResponseStatusNotFound(err.Error(), c)
 	} else {
 		c.JSON(http.StatusOK, messages)

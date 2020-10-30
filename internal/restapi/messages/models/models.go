@@ -3,15 +3,15 @@ package models
 import "time"
 
 type Messages struct {
-	Date        time.Time `json:"date"`
-	Submit_date time.Time `json:"submit_date"`
-	Done_date   time.Time `json:"done_date"`
-	Dest_addr   string    `json:"dest_addr"`
-	Id          int       `json:"id"`
-	Sms_text    string    `json:"sms_text,omitempty"`
-	Source_addr string    `json:"source_addr"`
-	Message_id  string    `json:"message_id"`
-	Stat        string    `json:"stat"`
+	Date        time.Time `json:"date" db:"Send.date"`
+	Submit_date time.Time `json:"submit_date" db:"submit_date"`
+	Done_date   time.Time `json:"done_date" db:"done_date"`
+	Dest_addr   string    `json:"dest_addr" db:"dest_addr"`
+	Id          int       `json:"id" db:"id"`
+	Sms_text    string    `json:"sms_text,omitempty" db:"sms_text"`
+	Source_addr string    `json:"source_addr" db:"Send.source_addr"`
+	Message_id  string    `json:"message_id" db:"SentMesId.message_id"`
+	Stat        string    `json:"stat" db:"stat"`
 }
 
 type DurationDate struct {

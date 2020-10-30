@@ -2,18 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="469aefbc-a684-40d0-874a-ca29e201d7cc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/internal/restapi/api/restapi.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/restapi/userMessages/apis/apis.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/restapi/userMessages/daos/userMessagesDAO.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/smsReport/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/smsReport/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/diagnostics/diagnostics.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/diagnostics/diagnostics.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/resources/resources.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/resources/resources.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/restapi/messages/apis.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/restapi/messages/apis/apis.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/restapi/api/restapi.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/restapi/api/restapi.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/restapi/messages/apis/apis.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/restapi/messages/apis/apis.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/restapi/messages/daos/messagesDAO.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/restapi/messages/daos/messagesDAO.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/restapi/messages/models/models.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/restapi/messages/models/models.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/restapi/messages/services.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/restapi/messages/services/services.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/restapi/restapi.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/restapi/messages/services/services.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/restapi/messages/services/services.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/restapi/userMessages/apis.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/restapi/userMessages/models/models.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/restapi/userMessages/models/models.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/restapi/userMessages/services.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/restapi/userMessages/services/services.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,10 +60,11 @@
       <recent name="$PROJECT_DIR$/internal/restapi/Messages" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/internal/restapi/userMessages/services" />
+      <recent name="$PROJECT_DIR$/internal/restapi/userMessages/daos" />
       <recent name="$PROJECT_DIR$/internal/restapi/api" />
       <recent name="$PROJECT_DIR$/internal/restapi/messages/apis" />
       <recent name="$PROJECT_DIR$/internal/restapi/messages/services" />
-      <recent name="$PROJECT_DIR$/internal/restApis" />
     </key>
   </component>
   <component name="RunManager">
@@ -108,7 +109,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603972744146</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="work verson">
+      <created>1604034443224</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1604034443225</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -116,7 +124,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added routes and changed architecture" />
-    <option name="LAST_COMMIT_MESSAGE" value="added routes and changed architecture" />
+    <MESSAGE value="work verson" />
+    <option name="LAST_COMMIT_MESSAGE" value="work verson" />
   </component>
   <component name="WindowStateProjectService">
     <state x="320" y="115" key="#Deployment" timestamp="1603869141226">
@@ -131,10 +140,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="184" y="112" width="1071" height="716" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1603983280804" />
-    <state x="327" y="23" width="785" height="819" key="CommitChangelistDialog2" timestamp="1603972743887">
+    <state x="327" y="23" width="785" height="819" key="CommitChangelistDialog2" timestamp="1604034442886">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="327" y="23" width="785" height="819" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1603972743887" />
+    <state x="327" y="23" width="785" height="819" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1604034442886" />
     <state x="574" y="354" key="Github.ShareDialog" timestamp="1603868879264">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -143,26 +152,30 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="520" y="162" key="Github.UntrackedFilesDialog/0.0.1440.900@0.0.1440.900" timestamp="1603868883658" />
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1603984989044">
+    <state width="1398" height="231" key="GridCell.Tab.0.bottom" timestamp="1604046263942">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1603984989044" />
-    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1603984989035">
+    <state width="1398" height="231" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1604046263942" />
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.23.1440.819@0.23.1440.819" timestamp="1604037367430" />
+    <state width="1398" height="231" key="GridCell.Tab.0.center" timestamp="1604046263938">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1603984989035" />
-    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1603984989033">
+    <state width="1398" height="231" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1604046263938" />
+    <state width="1398" height="245" key="GridCell.Tab.0.center/0.23.1440.819@0.23.1440.819" timestamp="1604037367326" />
+    <state width="1398" height="231" key="GridCell.Tab.0.left" timestamp="1604046263934">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1603984989033" />
-    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1603984989038">
+    <state width="1398" height="231" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1604046263934" />
+    <state width="1398" height="245" key="GridCell.Tab.0.left/0.23.1440.819@0.23.1440.819" timestamp="1604037367316" />
+    <state width="1398" height="231" key="GridCell.Tab.0.right" timestamp="1604046263940">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1603984989038" />
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1603972748358">
+    <state width="1398" height="231" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1604046263940" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right/0.23.1440.819@0.23.1440.819" timestamp="1604037367426" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1604034445695">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1603972748358" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1604034445695" />
     <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1603179339431">
       <screen x="0" y="0" width="1440" height="900" />
     </state>

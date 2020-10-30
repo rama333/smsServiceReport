@@ -7,6 +7,8 @@ import (
 	"smsServiceReport/internal/restapi/api"
 	"smsServiceReport/internal/restapi/messages/daos"
 	"smsServiceReport/internal/restapi/messages/services"
+	daos2 "smsServiceReport/internal/restapi/userMessages/daos"
+	services2 "smsServiceReport/internal/restapi/userMessages/services"
 )
 
 func main() {
@@ -37,7 +39,10 @@ func main() {
 	dbMessages := daos.New(rsc.Conn)
 	serMessages := services.NewService(dbMessages)
 
-	rapi := api.New(slogger, serMessages)
+	dbuserMessages := daos2.New(rsc.Conn)
+	serUserMessages := services2.New(dbuserMessages)
+
+	rapi := api.New(slogger, serMessages, serUserMessages)
 	rapi.Start(rsc.Config.RESTAPIPort)
 
 }

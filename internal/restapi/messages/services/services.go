@@ -2,7 +2,6 @@ package services
 
 import (
 	"smsServiceReport/internal/restapi/messages/models"
-	"time"
 )
 
 type Service struct {
@@ -10,7 +9,7 @@ type Service struct {
 }
 
 type FinderAndGetMessages interface {
-	GetMessages(startDuration time.Time, endDuration time.Time) ([]models.Messages, error)
+	GetMessages(startDuration string, endDuration string) ([]models.Messages, error)
 }
 
 func NewService(messages FinderAndGetMessages) *Service {
@@ -18,7 +17,7 @@ func NewService(messages FinderAndGetMessages) *Service {
 	return &Service{fg: messages}
 }
 
-func (s *Service) GetMessages(startDuration time.Time, endDuration time.Time) ([]models.Messages, error) {
+func (s *Service) GetMessages(startDuration string, endDuration string) ([]models.Messages, error) {
 
 	return s.fg.GetMessages(startDuration, endDuration)
 }
