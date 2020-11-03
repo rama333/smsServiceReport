@@ -1,6 +1,7 @@
 package resources
 
 import (
+	"smsServiceReport/internal/config"
 	"smsServiceReport/internal/diagnostics/healthz"
 	"time"
 )
@@ -11,7 +12,7 @@ func (r *R) Healthz() []healthz.Resource {
 	dbStatus := healthz.Ok
 	dbMsg := "It works!"
 	for i := 0; i < 5; i++ {
-		_, err = r.Conn.DB.Query("SELECT 1")
+		_, err = config.Config.DB.Query("SELECT 1")
 		if err == nil {
 			break
 		}

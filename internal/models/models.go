@@ -18,3 +18,8 @@ type DurationDate struct {
 	StartDuration string `json:"since_date"`
 	EndDuration   string `json:"on_date"`
 }
+type DurationDateUser struct {
+	Dest_adr      string `json:"dest_addr"`
+	StartDuration string `json:"since_date"`
+	EndDuration   string `json:"on_date"`
+}

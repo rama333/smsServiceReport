@@ -10,7 +10,7 @@ type IUserMessages interface {
 	GetUserMessages(dest_add string, startDuration string, endDuration string) ([]models.Messages, error)
 }
 
-func New(iU IUserMessages) *ServiceUserMessages {
+func NewServicesUserMessages(iU IUserMessages) *ServiceUserMessages {
 
 	return &ServiceUserMessages{su: iU}
 }

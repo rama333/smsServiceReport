@@ -1,14 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"go.uber.org/zap"
+	"smsServiceReport/internal/config"
 	"smsServiceReport/internal/diagnostics"
 	"smsServiceReport/internal/resources"
 	"smsServiceReport/internal/restapi/api"
-	"smsServiceReport/internal/restapi/messages/daos"
-	"smsServiceReport/internal/restapi/messages/services"
-	daos2 "smsServiceReport/internal/restapi/userMessages/daos"
-	services2 "smsServiceReport/internal/restapi/userMessages/services"
 )
 
 func main() {
@@ -19,12 +17,17 @@ func main() {
 	slogger.Info("Starting the application...")
 	slogger.Info("Reading configuration and initializing resources...")
 
+	if err := config.LoadConfig("/Users/ramilramilev/go/src/smsServiceReport/config"); err != nil {
+		panic(fmt.Errorf("invalid application configuration: %s", err))
+	}
+
 	rsc, err := resources.New(slogger)
 	if err != nil {
-		slogger.Fatalw("Can't initialize resources.", "err", err)
+		slogger.Fatalw("Can't initialize resources.", "err", rsc)
 	}
+
 	defer func() {
-		err = rsc.Release()
+		err := rsc.Release()
 		if err != nil {
 			slogger.Errorw("Got an error during resources release.", "err", err)
 		}
@@ -32,17 +35,11 @@ func main() {
 
 	slogger.Info("Configuring the application units...")
 
-	diag := diagnostics.New(slogger, rsc.Config.DiagPort, rsc.Healthz)
+	diag := diagnostics.New(slogger, config.Config.DIAGPORT, rsc.Healthz)
 	diag.Start(slogger)
 	slogger.Info("The application is ready to serve requests.")
 
-	dbMessages := daos.New(rsc.Conn)
-	serMessages := services.NewService(dbMessages)
-
-	dbuserMessages := daos2.New(rsc.Conn)
-	serUserMessages := services2.New(dbuserMessages)
-
-	rapi := api.New(slogger, serMessages, serUserMessages)
-	rapi.Start(rsc.Config.RESTAPIPort)
+	rapi := api.New(slogger)
+	rapi.Start(config.Config.RESTAPIPort)
 
 }
