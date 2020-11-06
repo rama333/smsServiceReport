@@ -3,7 +3,10 @@ package api
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/zap"
+	_ "smsServiceReport/cmd/smsReport/docs"
 	"smsServiceReport/internal/apis"
 )
 
@@ -24,6 +27,8 @@ func New(logger *zap.SugaredLogger) *RESTAPI {
 		v1.POST("UserMessages", apis.GetUserMessages)
 		//v1.POST("messages", apis.GetSumService)
 	}
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return &RESTAPI{server: r, logger: logger}
 }

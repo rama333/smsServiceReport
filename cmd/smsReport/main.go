@@ -5,10 +5,19 @@ import (
 	"go.uber.org/zap"
 	"smsServiceReport/internal/config"
 	"smsServiceReport/internal/diagnostics"
+	"smsServiceReport/internal/rabbitMQ"
 	"smsServiceReport/internal/resources"
 	"smsServiceReport/internal/restapi/api"
 )
 
+// @title sms service report Swagger API
+// @version 1.0
+// @description Swagger API for Golang Project sms service report Swagger API.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+
+//@BasePath /api/v1
 func main() {
 	logger, _ := zap.NewProduction()
 	defer logger.Sync()
@@ -39,7 +48,14 @@ func main() {
 	diag.Start(slogger)
 	slogger.Info("The application is ready to serve requests.")
 
+	rabbitChan, err := rabbitMQ.StartRabbitMQ()
+	if err != nil {
+		slogger.Info(err)
+	}
+
 	rapi := api.New(slogger)
 	rapi.Start(config.Config.RESTAPIPort)
+
+	rabbitChan.Close()
 
 }
