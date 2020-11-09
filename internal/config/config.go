@@ -10,11 +10,12 @@ import (
 var Config appConfig
 
 type appConfig struct {
-	DB          *sqlx.DB
-	DBerr       error
-	RESTAPIPort int    `mapstructure:"rest_api_port"`
-	DBURL       string `mapstructure:"db_url"`
-	DIAGPORT    int    `mapstructure:"diag_port"`
+	DB               *sqlx.DB
+	DBerr            error
+	RESTAPIPort      int     `mapstructure:"rest_api_port"`
+	DBURL            string  `mapstructure:"db_url"`
+	DIAGPORT         int     `mapstructure:"diag_port"`
+	RABBITMQWAITTIME float64 `mapstructure:"rabbit_wait_time"`
 }
 
 func LoadConfig(configPaths ...string) error {
@@ -30,6 +31,7 @@ func LoadConfig(configPaths ...string) error {
 	v.SetDefault("rest_api_port", 8080)
 	v.SetDefault("diag_port", 8081)
 	v.SetDefault("db_url", "tcp://192.168.114.145:9000?debug=true")
+	v.SetDefault("rabbit_wait_time", 60)
 
 	for _, path := range configPaths {
 		v.AddConfigPath(path)

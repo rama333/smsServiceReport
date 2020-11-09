@@ -2,15 +2,18 @@ package rabbitMQ
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/streadway/amqp"
 	"log"
 	"smsServiceReport/internal/config"
 	"strconv"
+	"strings"
 	"time"
 )
 
 var (
-	layout = "2006-01-02 15:04:05"
+	layout       = "2006-01-02 15:04:05"
+	WaitTimeList = config.Config.RABBITMQWAITTIME
 )
 
 type Send struct {
@@ -31,7 +34,7 @@ type Sent struct {
 }
 
 type Receive struct {
-	Date                   string `json:"date"`
+	Date                   string `json:"send_date"`
 	Message_id             string `json:"message_id"`
 	User_message_reference int64  `json:"user_message_reference"`
 	Sub                    string `json:"sub"`
@@ -39,7 +42,7 @@ type Receive struct {
 	Submit_date            string `json:"submit_date"`
 	Done_date              string `json:"done_date"`
 	Stat                   string `json:"stat"`
-	Err                    int64  `json:"err"`
+	Err                    int    `json:"err"`
 	Text                   string `json:"text"`
 	Source_addr            string `json:"source_addr"`
 	Destination_addr       string `json:"destination_addr"`
@@ -89,98 +92,201 @@ func StartRabbitMQ() (*amqp.Channel, error) {
 		nil,          // args
 	)
 
-	//msgs_receive_queue, err := ch.Consume(
-	//	"receive_queue", // queue
-	//	"",     // consumer
-	//	true,   // auto-ack
-	//	false,  // exclusive
-	//	false,  // no-local
-	//	false,  // no-wait
-	//	nil,    // args
-	//)
+	msgs_receive_queue, err := ch.Consume(
+		"receive_queue", // queue
+		"",              // consumer
+		true,            // auto-ack
+		false,           // exclusive
+		false,           // no-local
+		false,           // no-wait
+		nil,             // args
+	)
 
 	//forev := make(chan bool)
 
+	sendList := []Sent{}
+
 	go func() {
+		timeNow := time.Now()
 		for d := range msgs_send_queue {
 
-			log.Println(string(d.Body))
+			timeNowTemp := time.Now()
+			//log.Println("timeNowTemp", timeNowTemp)
+			//log.Println(string(d.Body))
+
+			tes := string(d.Body)
+
 			var send Sent
-			err := json.Unmarshal(d.Body, &send)
+			err := json.Unmarshal([]byte(strings.ReplaceAll(tes, "\n", "")), &send)
 			if err != nil {
-				log.Println(err)
+
+				log.Fatal("err send", string(d.Body), err)
 			}
 
-			date, err := time.Parse(layout, send.Date)
+			sendList = append(sendList, send)
 
-			if err != nil {
-				log.Println(err)
+			if len(sendList) >= 1000 || (timeNowTemp.Sub(timeNow)).Seconds() >= WaitTimeList && len(sendList) > 0 {
+				fmt.Println("-------------")
+				fmt.Println("len list", len(sendList))
+				fmt.Println("timeNow 1", timeNow)
+				fmt.Println("time now temp 2", timeNowTemp)
+
+				fmt.Println("duration", (timeNowTemp.Sub(timeNow)).Seconds())
+
+				fmt.Println("-------------")
+
+				tx, _ := config.Config.DB.Begin()
+				stmp, _ := tx.Prepare("INSERT INTO Send (date,id,sms_id,sms_text, source_addr,dest_addr,sequence ) VALUES ($1, $2, $3, $4, $5, $6, $7)")
+
+				for _, rec := range sendList {
+					dest_addr, err := strconv.ParseInt(rec.Dest_addr, 10, 64)
+
+					if err != nil {
+						log.Println(dest_addr)
+					}
+					_, err = stmp.Exec(rec.Date, rec.Id, rec.Sms_id, rec.Sms_text, rec.Source_addr, dest_addr, rec.Sequence)
+					if err != nil {
+						log.Fatal("err", err)
+					}
+				}
+
+				if err := tx.Commit(); err != nil {
+					log.Fatal("err", err)
+				}
+
+				sendList = sendList[:0]
+
+				timeNow = time.Now()
 			}
 
-			dest_addr, err := strconv.ParseInt(send.Dest_addr, 10, 64)
-
-			if err != nil {
-				log.Println(dest_addr)
-			}
-
-			tx := config.Config.DB.MustBegin()
-
-			tx.MustExec("INSERT INTO Send (date,id,sms_id,sms_text, source_addr,dest_addr,sequence ) VALUES ($1, $2, $3, $4, $5, $6, $7)", date, send.Id, send.Sms_id, send.Sms_text, send.Source_addr, dest_addr, send.Sequence)
-
-			err = tx.Commit()
-			if err != nil {
-				log.Println(err)
-			}
-
-			log.Println("seeeeen", send)
 		}
 	}()
 
+	sentMesIdList := []SentMesId{}
+
 	go func() {
+		timeNow := time.Now()
 		for d := range msgs_link_queue {
-			log.Println(string(d.Body))
+
+			timeNowTemp := time.Now()
+			//log.Println(string(d.Body))
 
 			var sentMesId SentMesId
 			err := json.Unmarshal(d.Body, &sentMesId)
 			if err != nil {
-				log.Println(err)
+				log.Fatal("err", err)
 			}
 
-			tx := config.Config.DB.MustBegin()
+			sentMesIdList = append(sentMesIdList, sentMesId)
 
-			tx.MustExec("INSERT INTO SentMesId (message_id, sequence ) VALUES ($1, $2)", sentMesId.Message_id, sentMesId.Sequence)
+			if len(sentMesIdList) >= 1000 || (timeNowTemp.Sub(timeNow)).Seconds() >= WaitTimeList && len(sentMesIdList) > 0 {
+				fmt.Println("-------------")
+				fmt.Println("len list", len(sentMesIdList))
+				fmt.Println("timeNow 1", timeNow)
+				fmt.Println("time now temp 2", timeNowTemp)
 
-			err = tx.Commit()
-			if err != nil {
-				log.Println(err)
+				fmt.Println("duration", (timeNowTemp.Sub(timeNow)).Seconds())
+
+				fmt.Println("-------------")
+
+				tx, _ := config.Config.DB.Begin()
+				stmp, _ := tx.Prepare("INSERT INTO SentMesId (message_id, sequence ) VALUES ($1, $2)")
+
+				for _, rec := range sentMesIdList {
+					_, err := stmp.Exec(rec.Message_id, rec.Sequence)
+					if err != nil {
+						log.Fatal("err", err)
+					}
+				}
+
+				if err := tx.Commit(); err != nil {
+					log.Fatal("err", err)
+				}
+
+				sentMesIdList = sentMesIdList[0:]
+				timeNow = time.Now()
 			}
-
-			log.Println(sentMesId)
 		}
 	}()
 
-	//go func() {
-	//	for d:= range msgs_receive_queue{
-	//		log.Println(string(d.Body))
-	//		var receive Receive
-	//		err := json.Unmarshal(d.Body, &receive)
-	//		if (err != nil){
-	//			log.Println(err)
-	//		}
-	//
-	//		tx := config.Config.DB.MustBegin()
-	//
-	//		tx.MustExec("INSERT INTO Receive (date, message_id, user_message_reference, sub, dlvrd, submit_date, done_date, stat, err, text,source_addr,destination_addr) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)", rec.Date,rec.Message_id, rec.User_message_reference,rec.Sub,rec.Dlvrd, rec.Submit_date, rec.Done_date, rec.Stat, rec.Err, rec.Text, rec.Source_addr, rec.Destination_addr)
-	//
-	//
-	//		err = tx.Commit()
-	//		if err != nil{
-	//			log.Println(err)
-	//		}
-	//
-	//		//log.Println("receive",receive)
-	//	}
-	//}()
+	receiveList := []Receive{}
+
+	go func() {
+		timeNow := time.Now()
+		for d := range msgs_receive_queue {
+
+			timeNowTemp := time.Now()
+			//k := d.Body
+			var receive Receive
+			err := json.Unmarshal(d.Body, &receive)
+			if err != nil {
+				log.Fatal("err receive", err)
+			}
+
+			receiveList = append(receiveList, receive)
+
+			if len(receiveList) >= 1000 || (timeNowTemp.Sub(timeNow)).Seconds() >= WaitTimeList && len(receiveList) > 0 {
+				fmt.Println("-------------")
+				fmt.Println("len list", len(receiveList))
+				fmt.Println("timeNow 1", timeNow)
+				fmt.Println("time now temp 2", timeNowTemp)
+
+				fmt.Println("duration", (timeNowTemp.Sub(timeNow)).Seconds())
+
+				log.Println()
+
+				fmt.Println("-------------")
+
+				tx, _ := config.Config.DB.Begin()
+				stmp, _ := tx.Prepare("INSERT INTO Receive (date, message_id, user_message_reference, sub, dlvrd, submit_date, done_date, stat, err, text,source_addr,destination_addr) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)")
+
+				for _, rec := range receiveList {
+
+					date, err := time.Parse(layout, rec.Date)
+
+					if err != nil {
+						log.Fatal("err", err)
+					}
+
+					submit_date, err := time.Parse(layout, rec.Date)
+
+					if err != nil {
+						log.Fatal("err", err)
+					}
+
+					done_date, err := time.Parse(layout, rec.Date)
+
+					if err != nil {
+						log.Fatal("err", err)
+					}
+
+					dest_addr, err := strconv.ParseInt(rec.Destination_addr, 10, 64)
+
+					if err != nil {
+						log.Fatal("err", err)
+					}
+
+					errReceive := strconv.Itoa(rec.Err)
+
+					_, err = stmp.Exec(date, rec.Message_id, rec.User_message_reference, rec.Sub, rec.Dlvrd, submit_date, done_date, rec.Stat, errReceive, rec.Text, rec.Source_addr, dest_addr)
+					if err != nil {
+						log.Fatal("err stp", err)
+					}
+
+				}
+
+				if err := tx.Commit(); err != nil {
+					log.Fatal("err", err)
+				}
+
+				timeNow = time.Now()
+
+				receiveList = receiveList[0:]
+			}
+
+			//log.Println("receive",receive)
+		}
+	}()
 
 	//<-forev
 

@@ -1,0 +1,10 @@
+basePath: /api/v1
+info:
+  contact:
+    name: API Support
+  description: Swagger API for Golang Project sms service report Swagger API.
+  termsOfService: http://swagger.io/terms/
+  title: sms service report Swagger API
+  version: "1.0"
+paths: {}
+swagger: "2.0"
